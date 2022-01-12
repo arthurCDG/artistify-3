@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-const UserModel = new Schema({
+const UserSchema = new Schema({
   username: {
     type: String,
     required: [true, "Please provide a username"],
@@ -17,7 +17,7 @@ const UserModel = new Schema({
   role: {
     type: String,
     enum: ["admin", "user"],
-    default: user,
+    default: "user",
   },
   avatar: {
     type: String,
@@ -25,3 +25,7 @@ const UserModel = new Schema({
       "https://res.cloudinary.com/gdaconcept/image/upload/v1614762472/workshop-artistify/default-profile_tbiwcc.jpg",
   },
 });
+
+const UserModel = model("users", UserSchema);
+
+module.exports = UserModel;
