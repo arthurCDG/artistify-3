@@ -5,7 +5,7 @@ const uploader = require("./../config/cloudinary");
 const protectAdminRoute = require("./../middlewares/protectAdminRoute");
 const StyleModel = require("./../model/Style");
 
-// router.use(protectAdminRoute);
+router.use(protectAdminRoute);
 
 // GET - all artists
 router.get("/", async (req, res, next) => {

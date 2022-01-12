@@ -2,16 +2,18 @@ const express = require("express");
 const authRouter = express.Router();
 const UserModel = require("../model/User");
 const bcrypt = require("bcrypt"); // lib to encrypt data
+const protectAuthRoute = require("./../middlewares/protectAuthRoute");
+const protectRoute = require("./../middlewares/protectRoute");
 
-authRouter.get('/signin', (req, res, next) => {
+authRouter.get('/signin', protectAuthRoute,  (req, res, next) => {
     res.render("auth/signin.hbs")
 })
 
-authRouter.get('/signup', (req, res, next) => {
+authRouter.get('/signup', protectAuthRoute, (req, res, next) => {
     res.render("auth/signup.hbs");
 })
 
-authRouter.get("/signout", (req, res, next) => {
+authRouter.get("/signout", protectRoute, (req, res, next) => {
     req.session.destroy((err) => res.redirect("/auth/signin")
     )
 })
@@ -35,7 +37,7 @@ authRouter.post('/signin', async (req, res, next) => {
                 delete userObject.password;
                 req.session.currentUser = userObject;
                 req.flash("success", "Successfully logged in...");
-                res.redirect("/profile");
+                res.redirect("/auth/profile");
             }
         }
     }
@@ -74,6 +76,11 @@ authRouter.post('/signup', async (req, res, next) => {
     // next(err)
     // }
 })
+
+// diplay profile page only if logged in 
+authRouter.get("/profile", protectRoute, function(req, res) {
+    res.render("auth/profile")
+});
 
 
 module.exports = authRouter;

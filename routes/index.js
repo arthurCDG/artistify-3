@@ -6,6 +6,8 @@ const AlbumModel = require("./../model/Album");
 const LabelModel = require("./../model/Label");
 const StyleModel = require("./../model/Style");
 
+const protectAdminRoute = require("./../middlewares/protectAdminRoute");
+
 /* GET home page. */
 
 router.get("/", async (req, res, next) => {
@@ -27,7 +29,7 @@ router.get("/", async (req, res, next) => {
 
 /* GET dashboard page  */
 
-router.get("/dashboard", async (req, res, next) => {
+router.get("/dashboard", protectAdminRoute, async (req, res, next) => {
   try {
     const dbRes = await Promise.all([
       ArtistModel.find(),
@@ -111,5 +113,8 @@ router.get("/search", async (req, res, next) => {
     next(err);
   }
 });
+
+
+
 
 module.exports = router; // MANDATORY

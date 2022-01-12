@@ -59,11 +59,15 @@ const authRouter = require("./routes/auth");
 
 // use routers
 app.use("/", indexRouter); // use routers
+app.use("/auth", authRouter);
+
+// enables to apply the protectAdminRoute middleware to all the /dashboard/ routes below
+//app.use(require("./middlewares/protectAdminRoute"));
+
 app.use("/dashboard/artist", artistRouter); // use artist router
 app.use("/dashboard/album", albumRouter); // use album router
 app.use("/dashboard/label", labelRouter); // use label router
 app.use("/dashboard/style", styleRouter); // use style router
-app.use("/auth", authRouter);
 
 
 // catch 404 and forward to error handler

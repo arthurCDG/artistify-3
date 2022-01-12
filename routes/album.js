@@ -9,7 +9,7 @@ const protectAdminRoute = require("./../middlewares/protectAdminRoute");
 // router.use(protectAdminRoute);
 
 // GET - all albums
-router.get("/", async (req, res, next) => {
+router.get("/", protectAdminRoute, async (req, res, next) => {
   try {
     res.render("dashboard/albums", {
       albums: await AlbumModel.find().populate("artist label"),
@@ -20,14 +20,14 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET - create one album (form)
-router.get("/create", async (req, res, next) => {
+router.get("/create", protectAdminRoute, async (req, res, next) => {
   const artists = await ArtistModel.find();
   const labels = await LabelModel.find();
   res.render("dashboard/albumCreate", { artists, labels });
 });
 
 // GET - update one album (form)
-router.get("/update/:id", async (req, res, next) => {
+router.get("/update/:id", protectAdminRoute, async (req, res, next) => {
   try {
     const artists = await ArtistModel.find();
     const labels = await LabelModel.find();
@@ -39,7 +39,7 @@ router.get("/update/:id", async (req, res, next) => {
 });
 
 // GET - delete one album
-router.get("/delete/:id", async (req, res, next) => {
+router.get("/delete/:id", protectAdminRoute, async (req, res, next) => {
   try {
     await AlbumModel.findByIdAndRemove(req.params.id);
     res.redirect("/dashboard/album");
@@ -74,5 +74,6 @@ router.post("/:id", uploader.single("cover"), async (req, res, next) => {
     next(err);
   }
 });
+
 
 module.exports = router;
